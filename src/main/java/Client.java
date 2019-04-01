@@ -20,18 +20,20 @@ public class Client {
                 String serverWord;
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-                do {
+                while(true) {
                     System.out.println("What you want to know? Print 'allStudents' to get list of all students? or print 'details' to get" +
                             "info about student by his/her id");
                     word = reader.readLine();
+                    if (word.equals("stop")){
+                        break;
+                    }
                     if (word.equals("allStudents") || word.equals("details")) {
                         if (word.equals("details")) {
                             System.out.println("Print student id, you want know about");
                             param = reader.readLine();
                             word += " " + param;
                         }
-                        System.out.print("out");
-                        out.write(word);
+                        out.write(word+"\n");
                         out.flush();
                         serverWord = in.readLine();
                         System.out.println(serverWord);
@@ -42,7 +44,6 @@ public class Client {
                         }
                     }
                 }
-                while (!reader.equals("stop"));
 
             } finally {
                 System.out.println("Client closed");

@@ -1,0 +1,1 @@
+[{"enrollId":2,"student":{"studentId":2,"studentName":"Tro","course":5},"disc":{"discId":1,"discName":"OOP","creditsNum":6.0},"grade":61},{"enrollId":5,"student":{"studentId":2,"studentName":"Tro","course":5},"disc":{"discId":3,"discName":"DB","creditsNum":4.0},"grade":71}]

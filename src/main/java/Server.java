@@ -26,15 +26,15 @@ public class Server {
                 try {
                     String word;
                     String result="";
-                        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-                        word = in.readLine();
-                        System.out.println(word);
-                        StudentController contr = new StudentController();
-                        result = contr.parse(word);
-                        out.write("Server:  " + result + "\n");
-                        out.flush();
-                        Thread.sleep(1000);
+                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                    word = in.readLine();
+                    System.out.println(word);
+                    StudentController contr = new StudentController();
+                    result = contr.parse(word);
+                    out.write("Server:  " + result + "\n");
+                    out.flush();
+                    Thread.sleep(1000);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
