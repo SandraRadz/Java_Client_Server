@@ -1,3 +1,4 @@
+import controller.StudentController;
 import dao.impl.StudentDaoImpl;
 import vo.Discipline;
 import vo.Enrollment;
@@ -16,37 +17,40 @@ public class Server {
     private static BufferedWriter out; // поток записи в сокет
 
     public static void main(String[] args) {
+
         try {
-            try  {
+            try {
                 server = new ServerSocket(4004);
-                System.out.println("Server runs");
+                System.out.println("Server run");
                 clientSocket = server.accept();
                 try {
-                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-
-                        String word = in.readLine();
+                    String word;
+                    String result="";
+                        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+                        word = in.readLine();
                         System.out.println(word);
-                        out.write("Client print : " + word + "\n");
+                        StudentController contr = new StudentController();
+                        result = contr.parse(word);
+                        out.write("Server:  " + result + "\n");
                         out.flush();
-                        System.out.println("Waiting for the next operation data...");
-                        System.out.println();
                         Thread.sleep(1000);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
+                    System.out.println("Socket closed");
                     clientSocket.close();
+                    // потоки тоже хорошо бы закрыть
                     in.close();
                     out.close();
                 }
             } finally {
-                System.out.println("Server stopped!");
+                System.out.println("Server closed");
                 server.close();
             }
         } catch (IOException e) {
             System.err.println(e);
         }
-
     }
 }

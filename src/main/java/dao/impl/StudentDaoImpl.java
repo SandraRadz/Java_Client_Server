@@ -46,6 +46,7 @@ public class StudentDaoImpl extends DAO<Student> {
     }
 
     public List<Student> getAll() {
+        System.out.println("dao");
         List<Student> students = new ArrayList<Student>();
         try {
             PreparedStatement prep = con.prepareStatement("SELECT * FROM student");
@@ -70,15 +71,10 @@ public class StudentDaoImpl extends DAO<Student> {
                     "WHERE student_id=? AND fio=?;");
 
             prep.setInt(1, student.getStudentId());
-            prep.setString(1, student.getStudentName());
+            prep.setString(2, student.getStudentName());
 
             ResultSet res = prep.executeQuery();
-            while (res.next()) {
-                enroll.add(new Enrollment(res.getInt(1),
-                        new Student(res.getInt(5), res.getString(6), res.getInt(7)),
-                        new Discipline(res.getInt(2), res.getString(3), res.getFloat(4)),
-                         res.getInt(8)));
-            }
+            enroll = parseResToEnroll(res);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,8 +83,41 @@ public class StudentDaoImpl extends DAO<Student> {
     }
 
 
-    public List<Discipline> getDiscByStudentId(){
-        return null;
+    public List<Enrollment> getDiscByStudentId(int id){
+        List<Enrollment> enroll = new ArrayList<Enrollment>();
+        try {
+            PreparedStatement prep = con.prepareStatement("SELECT ENROLLMENT.id, DISCIPLINE.id, DISCIPLINE.name, credits, STUDENT.id, STUDENT.fio, course, grade\n" +
+                    "FROM (STUDENT INNER JOIN ENROLLMENT on STUDENT.id = student_id)\n" +
+                    "  INNER JOIN DISCIPLINE ON discipline_id = DISCIPLINE.id\n" +
+                    "WHERE student_id=?;");
+
+            prep.setInt(1, id);
+
+            ResultSet res = prep.executeQuery();
+            enroll = parseResToEnroll(res);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return enroll;
+    }
+
+    public List<Enrollment> parseResToEnroll(ResultSet res){
+        List<Enrollment> enroll = new ArrayList<Enrollment>();
+
+        while (true) {
+            try {
+                if (!res.next()) break;
+
+            enroll.add(new Enrollment(res.getInt(1),
+                    new Student(res.getInt(5), res.getString(6), res.getInt(7)),
+                    new Discipline(res.getInt(2), res.getString(3), res.getFloat(4)),
+                    res.getInt(8)));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        }
+        return enroll;
     }
 
     public void close() {
