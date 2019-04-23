@@ -85,7 +85,6 @@ public class StudentDaoImpl extends DAO<Student> {
 
     public List<Enrollment> getDiscByStudentId(int id){
         List<Enrollment> enroll = new ArrayList<Enrollment>();
-        System.out.println("i'm in dao");
         try {
             PreparedStatement prep = con.prepareStatement("SELECT ENROLLMENT.id, DISCIPLINE.id, DISCIPLINE.name, credits, STUDENT.id, STUDENT.fio, course, grade\n" +
                     "FROM (STUDENT INNER JOIN ENROLLMENT on STUDENT.id = student_id)\n" +
@@ -99,7 +98,6 @@ public class StudentDaoImpl extends DAO<Student> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return enroll;
     }
 

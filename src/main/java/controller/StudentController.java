@@ -8,15 +8,18 @@ import vo.Student;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class StudentController {
+    List<String> st = new ArrayList<String>();
+    StudentInfoServiceImpl service = new StudentInfoServiceImpl();
 
     public String parse(String line){
-        StudentInfoServiceImpl service = new StudentInfoServiceImpl();
         String result="it seems there is no command with this name";
-        List<String> st = Arrays.asList(line.split(" "));
+        st = Arrays.asList(line.split(" "));
         System.out.print("size = " + st.size());
         String method = st.get(0);
         if (method.equals("allStudents")){

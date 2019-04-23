@@ -14,7 +14,6 @@ public class Client {
             try {
                 clientSocket = new Socket("localhost", 4004);
                 reader = new BufferedReader(new InputStreamReader(System.in));
-                // читать соообщения с сервера
                 String word;
                 String param;
                 String serverWord;
